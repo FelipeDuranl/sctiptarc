@@ -13,12 +13,12 @@ export cloud="AzureCloud";
 
 
 # Download the installation package
-output=$(wget https://gbl.his.arc.azure.com/azcmagent-linux -O /tmp/install_linux_azcmagent.sh 2>&1);
+output=$(/home/arcdemo/sctiptarc/install_azcmagent.sh 2>&1);
 if [ $? != 0 ]; then wget -qO- --method=PUT --body-data="{\"subscriptionId\":\"$subscriptionId\",\"resourceGroup\":\"$resourceGroup\",\"tenantId\":\"$tenantId\",\"location\":\"$location\",\"correlationId\":\"$correlationId\",\"authType\":\"$authType\",\"operation\":\"onboarding\",\"messageType\":\"DownloadScriptFailed\",\"message\":\"$output\"}" "https://gbl.his.arc.azure.com/log" &> /dev/null || true; fi;
 echo "$output";
 
 # Install the hybrid agent
-bash /tmp/install_linux_azcmagent.sh;
+bash /home/arcdemo/sctiptarc/install_azcmagent.sh;
 
 # Run connect command
 sudo azcmagent connect --service-principal-id "$ServicePrincipalId" --service-principal-secret "$ServicePrincipalClientSecret" --resource-group "$resourceGroup" --tenant-id "$tenantId" --location "$location" --subscription-id "$subscriptionId" --cloud "$cloud" --correlation-id "$correlationId";
